@@ -81,6 +81,25 @@ Se travar, o outro worker tenta pegar após o período da reserva. O agendamento
 
 ## Item 4:
 
+**Token em log:<br >**
+Quem tem acesso ao log pode se autenticar e se passar pelo usuário.<br >
+
+```python
+logger.info(f"busca titulo={titulo} token={authorization}")
+```
+
+**SQL concatenado:<br >**
+Acho que é o mais divulgado / famoso.<br >
+Basta usar parâmetros nas queries.<br >
+
+```python
+conn.cursor().execute(
+            "INSERT dbo.solicitacoes (titulo, descricao) VALUES (?, ?)",
+            s.titulo, s.descricao)
+```
+
+**XSS armazenado:**
+Basta usar esc() em tudo que vem da API.
 
 
 
