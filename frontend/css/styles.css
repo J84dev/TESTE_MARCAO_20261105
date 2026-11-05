@@ -1,0 +1,68 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 700px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.field {
+  margin: 14px 0;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  font: inherit;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+button {
+  padding: 8px 16px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.feedback.error {
+  color: #a32121;
+}
+
+.feedback.success {
+  color: #176b37;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.detail-item {
+  margin: 10px 0;
+}
+
+.detail-description {
+  white-space: pre-wrap;
+}
