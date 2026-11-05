@@ -99,9 +99,13 @@ conn.cursor().execute(
 ```
 
 **XSS armazenado:**
-Basta usar esc() em tudo que vem da API.
+Basta usar escape (esc()) em tudo que vem da API.
 
-
+```js
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+lista.innerHTML = dados.map(s => `<li><b>${esc(s.titulo)}</b>: ${esc(s.descricao)}</li>`).join('');
+```
 
 ## Item 5:
 
