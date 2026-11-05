@@ -4,42 +4,32 @@ const form = document.querySelector("#solicitacao-form");
 const feedback = document.querySelector("#feedback");
 
 function mostrarFeedback(mensagem, tipo) {
-  feedback.textContent = mensagem;
+  feedback.innerHTML = esc(mensagem);
   feedback.className = `feedback ${tipo}`;
 }
 
-function criarCampo(campo) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "field";
+const TIPOS_INPUT = ["text", "email"];
 
-  const label = document.createElement("label");
-  label.htmlFor = campo.nome;
-  label.textContent = campo.rotulo;
+function htmlCampo(campo) {
+  const nome = esc(campo.nome);
+  const obrigatorio = campo.obrigatorio ? " required" : "";
+  const placeholder = campo.placeholder ? ` placeholder="${esc(campo.placeholder)}"` : "";
+  const atributos = `id="${nome}" name="${nome}"${obrigatorio}${placeholder}`;
 
-  let input;
+  let controle;
   if (campo.tipo === "textarea") {
-    input = document.createElement("textarea");
+    controle = `<textarea ${atributos}></textarea>`;
   } else if (campo.tipo === "select") {
-    input = document.createElement("select");
-    for (const valor of campo.opcoes ?? []) {
-      const option = document.createElement("option");
-      option.value = valor;
-      option.textContent = valor;
-      input.appendChild(option);
-    }
+    const opcoes = (campo.opcoes ?? [])
+      .map((v) => `<option value="${esc(v)}">${esc(v)}</option>`)
+      .join("");
+    controle = `<select ${atributos}>${opcoes}</select>`;
   } else {
-    const tiposPermitidos = ["text", "email"];
-    input = document.createElement("input");
-    input.type = tiposPermitidos.includes(campo.tipo) ? campo.tipo : "text";
+    const tipo = TIPOS_INPUT.includes(campo.tipo) ? campo.tipo : "text";
+    controle = `<input type="${tipo}" ${atributos}>`;
   }
 
-  input.id = campo.nome;
-  input.name = campo.nome;
-  input.required = Boolean(campo.obrigatorio);
-  if (campo.placeholder) input.placeholder = campo.placeholder;
-
-  wrapper.append(label, input);
-  return wrapper;
+  return `<div class="field"><label for="${nome}">${esc(campo.rotulo)}</label>${controle}</div>`;
 }
 
 async function carregarSchema() {
@@ -48,20 +38,15 @@ async function carregarSchema() {
     if (!resposta.ok) throw new Error("Falha ao carregar o schema.");
     const schema = await resposta.json();
 
-    // textContent evita interpretar dados recebidos como HTML.
-    document.querySelector("#form-title").textContent = schema.titulo;
-    document.querySelector("#form-description").textContent = schema.descricao;
+    document.querySelector("#form-title").innerHTML = esc(schema.titulo);
+    document.querySelector("#form-description").innerHTML = esc(schema.descricao);
 
-    form.replaceChildren();
-    for (const campo of schema.campos) form.appendChild(criarCampo(campo));
-
-    const submit = document.createElement("button");
-    submit.type = "submit";
-    submit.textContent = "Enviar solicitação";
-    form.appendChild(submit);
+    form.innerHTML =
+      schema.campos.map(htmlCampo).join("") +
+      `<button type="submit">Enviar solicitação</button>`;
   } catch (erro) {
     mostrarFeedback(erro.message, "error");
-    form.replaceChildren();
+    form.innerHTML = "";
   }
 }
 

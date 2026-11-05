@@ -2,10 +2,17 @@ const API_BASE = "http://localhost:8000";
 const lista = document.querySelector("#lista");
 const feedback = document.querySelector("#feedback");
 
-function celula(texto) {
-  const td = document.createElement("td");
-  td.textContent = texto ?? "";
-  return td;
+function linha(item) {
+  const criada = new Date(item.criada_em).toLocaleString("pt-BR");
+  return `
+    <tr>
+      <td>${esc(item.codigo)}</td>
+      <td>${esc(item.assunto)}</td>
+      <td>${esc(item.prioridade)}</td>
+      <td>${esc(item.status)}</td>
+      <td>${esc(criada)}</td>
+      <td><a href="detalhes.html?id=${encodeURIComponent(item.id)}">Ver detalhes</a></td>
+    </tr>`;
 }
 
 async function carregarSolicitacoes() {
@@ -15,50 +22,23 @@ async function carregarSolicitacoes() {
     const itens = await resposta.json();
 
     if (itens.length === 0) {
-      lista.textContent = "Nenhuma solicitação cadastrada.";
+      lista.innerHTML = "Nenhuma solicitação cadastrada.";
       return;
     }
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "table-wrap";
-    const tabela = document.createElement("table");
-    const thead = document.createElement("thead");
-    const linhaCabecalho = document.createElement("tr");
-
-    for (const titulo of ["Código", "Assunto", "Prioridade", "Status", "Criada em", ""]) {
-      const th = document.createElement("th");
-      th.textContent = titulo;
-      linhaCabecalho.appendChild(th);
-    }
-    thead.appendChild(linhaCabecalho);
-
-    const tbody = document.createElement("tbody");
-    for (const item of itens) {
-      const tr = document.createElement("tr");
-      tr.append(
-        celula(item.codigo),
-        celula(item.assunto),
-        celula(item.prioridade),
-        celula(item.status),
-        celula(new Date(item.criada_em).toLocaleString("pt-BR"))
-      );
-
-      const tdAcao = document.createElement("td");
-      const link = document.createElement("a");
-      link.textContent = "Ver detalhes";
-      link.href = `detalhes.html?id=${encodeURIComponent(item.id)}`;
-      tdAcao.appendChild(link);
-      tr.appendChild(tdAcao);
-      tbody.appendChild(tr);
-    }
-
-    tabela.append(thead, tbody);
-    wrapper.appendChild(tabela);
-    lista.replaceChildren(wrapper);
+    lista.innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Código</th><th>Assunto</th><th>Prioridade</th><th>Status</th><th>Criada em</th><th></th></tr>
+          </thead>
+          <tbody>${itens.map(linha).join("")}</tbody>
+        </table>
+      </div>`;
   } catch (erro) {
-    feedback.textContent = erro.message;
+    feedback.innerHTML = esc(erro.message);
     feedback.className = "feedback error";
-    lista.replaceChildren();
+    lista.innerHTML = "";
   }
 }
 
