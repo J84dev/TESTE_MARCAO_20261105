@@ -76,8 +76,8 @@ UPDATE dbo.agendamentos
 -- rowcount = 1 → ganhou
 ```
 
-Só depois que terminar a execução o worker ganhador altera a próxima execução.
-Se travar, o outro worker tenta pegar após o período da reserva. O agenda mento não se perde mais.
+Só depois que terminar a execução o worker ganhador altera a próxima execução.<br >
+Se travar, o outro worker tenta pegar após o período da reserva. O agenda mento não se perde mais.<br >
 
 ## Item 4:
 
