@@ -113,10 +113,8 @@ SSE no caso do fluxo ser somente servidor -> cliente;<br >
 WebSocket se o alerta exigir uma interação bidirecional de baixa latência;<br >
 Web Push caso o utilizador precise de receber as notificações mesmo com a aplicação ou o navegador fechados em segundo plano.<br >
 
-O que muda:
-Essas opções passam a não bloquear a tela do cliente;
-Pode usar qualquer navegador web (dispositivo);
-Permite centralizar todos os avisos num painel ou central.
-
-
+O que muda:<br >
+Essas opções passam a não bloquear a tela do cliente;<br >
+Pode usar qualquer navegador web (dispositivo);<br >
+Permite centralizar todos os avisos num painel ou central.<br >
 
