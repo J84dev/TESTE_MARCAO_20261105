@@ -107,7 +107,12 @@ const esc = s => String(s).replace(/[&<>"']/g,
 lista.innerHTML = dados.map(s => `<li><b>${esc(s.titulo)}</b>: ${esc(s.descricao)}</li>`).join('');
 ```
 
-## Item 5:
+## Item 5:<br >
+
+SSE no caso do fluxo ser somente servidor -> cliente;<br >
+WebSocket se o alerta exigir uma interação bidirecional de baixa latência;<br >
+Web Push caso o utilizador precise de receber as notificações mesmo com a aplicação ou o navegador fechados em segundo plano.<br >
+
 
 
 
