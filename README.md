@@ -10,3 +10,17 @@ Ambiente de desenvolvimento: dev container (docker).<br >
 Algumas funcionalidades podem melhorar (indiquei em comentários).<br >
 
 <br >
+## Item 3:
+<br >
+```sql
+CREATE TABLE dbo.agendamentos (
+    id                INT IDENTITY PRIMARY KEY,
+    nome              NVARCHAR(100) NOT NULL,
+    intervalo_min     INT           NOT NULL,
+    proxima_execucao  DATETIME2(3)  NOT NULL
+);
+
+INSERT dbo.agendamentos (nome, intervalo_min, proxima_execucao)
+VALUES (N'Sincroniza estoque', 15, '2026-11-05 10:00:00.000');
+
+
